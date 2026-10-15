@@ -358,17 +358,23 @@ GOV = shell("governance.html", "Governance",
 <div><h2>Board of Directors</h2>
 <p>Cecil Soccer League, Inc. is governed by a volunteer Board of Directors under the league's bylaws. The board sets policy, approves budgets, oversees the league's finances and facilities, and elects the league's officers.</p>
 <h3>Officers and directors</h3>
-<div class="tablewrap"><table><thead><tr><th>Role</th><th>Responsibility</th></tr></thead><tbody>
-<tr><td>President</td><td>Chairs the board and oversees league operations</td></tr>
-<tr><td>Director of Recreational Program</td><td>Spring, fall, and winter recreational seasons</td></tr>
-<tr><td>Director of Representative (Travel) Program</td><td>Competitive travel teams</td></tr>
-<tr><td>Director of Coaching</td><td>Coach development and licensing</td></tr>
-<tr><td>Treasurer</td><td>Finances, records, and filings</td></tr>
-<tr><td>Secretary</td><td>Minutes, notices, and official records</td></tr>
-<tr><td>Registrar</td><td>Player registration and player cards</td></tr>
-<tr><td>Director of Facilities</td><td>Chesland Soccer Complex operations</td></tr>
-<tr><td>Tournament Director</td><td>Chesapeake Cup and Fall Blast</td></tr>
+<div class="tablewrap"><table><thead><tr><th>Position</th><th>Name</th></tr></thead><tbody>
+<tr><th colspan="2">Executive Board</th></tr>
+<tr><td>President</td><td>Chris Smith</td></tr>
+<tr><td>Vice President &amp; Director of Travel Soccer</td><td>Don Dzedzy</td></tr>
+<tr><td>Vice President &amp; Director of Recreational Soccer</td><td>Jen Casto</td></tr>
+<tr><td>Treasurer</td><td>Jeff Brizuela</td></tr>
+<tr><td>Secretary</td><td>Wade Harvey</td></tr>
+<tr><td>Director of Coaching</td><td>Sam Jones</td></tr>
+<tr><th colspan="2">Voting Board Directors</th></tr>
+<tr><td>Director of Facilities (Chesland Operations)</td><td>Sean Durgin</td></tr>
+<tr><td>Equipment Manager</td><td>Heather Jones</td></tr>
+<tr><td>Director of Marketing</td><td>Amy Sley</td></tr>
+<tr><td>Tournament Directors</td><td>Jeff Privett and Ed Valladares</td></tr>
+<tr><td>Field Manager</td><td>Dan Dekowski</td></tr>
+<tr><td>Registrar</td><td><em>Vacant</em></td></tr>
 </tbody></table></div>
+<p class="cite">Officers and directors as elected at the October 11, 2026 board meeting.</p>
 <p>Contact the board at <a href="mailto:board@cecilsoccer.org">board@cecilsoccer.org</a>.</p></div>
 <div class="panel"><h3>Nonprofit status</h3><dl>
 <dt>Organization</dt><dd>Cecil Soccer League, Inc.</dd>
