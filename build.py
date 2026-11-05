@@ -108,6 +108,15 @@ footer .legal{border-top:1px solid #2c2c2c;margin-top:1.6rem;padding-top:1rem;fo
 
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Oswald:wght@500;600&display=swap">'
 
+# Ask Cecil floating chat. Assets and API live on the Worker; the script injects its own fixed launcher.
+CECIL_WORKER = "https://cecil-ask.seandurgin.workers.dev"
+CECIL_CSS = f'<link rel="stylesheet" href="{CECIL_WORKER}/cecil-ball.css">'
+CECIL_JS = f"""<script
+  src="{CECIL_WORKER}/cecil-ball.js"
+  data-cecil
+  data-worker-url="{CECIL_WORKER}"
+></script>"""
+
 LD = """<script type="application/ld+json">{"@context":"https://schema.org","@type":"SportsOrganization","name":"Cecil Soccer League, Inc.","alternateName":"Cecil FC","url":"https://cecilfc.org/","logo":"https://cecilfc.org/img/cfc-logo.png","sameAs":["https://www.cecilsoccer.org/","https://www.facebook.com/CecilSoccer/","https://www.instagram.com/cecilsoccer/"],"sport":"Soccer","nonprofitStatus":"Nonprofit501c3","taxID":"52-1311485","email":"info@cecilsoccer.org","telephone":"+1-410-670-7347","address":{"@type":"PostalAddress","streetAddress":"401 Elk Forest Rd","addressLocality":"Elkton","addressRegion":"MD","postalCode":"21921","addressCountry":"US"},"location":{"@type":"Place","name":"Chesland Soccer Complex","address":{"@type":"PostalAddress","streetAddress":"401 Elk Forest Rd","addressLocality":"Elkton","addressRegion":"MD","postalCode":"21921","addressCountry":"US"}}}</script>"""
 
 
@@ -122,7 +131,7 @@ def shell(fname, title, desc, body, hero=None, sub=""):
 <meta name="description" content="{desc}">
 <link rel="canonical" href="https://cecilfc.org/{'' if fname == 'index.html' else fname}">
 <link rel="icon" href="img/cfc-logo.png">
-{FONTS}<link rel="stylesheet" href="style.css">{LD if fname == 'index.html' else ''}
+{FONTS}<link rel="stylesheet" href="style.css">{CECIL_CSS}{LD if fname == 'index.html' else ''}
 </head><body>
 <div class="bar"><div class="wrap">cecilfc.org is an official website of <strong>Cecil Soccer League, Inc.</strong>, a 501(c)(3) nonprofit. Registration and team pages: <a href="{CSL}/">cecilsoccer.org</a></div></div>
 <header class="top"><div class="wrap"><a class="brand" href="index.html"><img src="img/logo.png" alt="Cecil FC logo" width="58" height="58"><span>Cecil FC<small>Cecil Soccer League, Inc.</small></span></a><nav aria-label="Main">{nav}</nav></div></header>
@@ -135,6 +144,7 @@ def shell(fname, title, desc, body, hero=None, sub=""):
 <div><h3>Physical address</h3><p>Chesland Soccer Complex<br>401 Elk Forest Rd<br>Elkton, MD 21921</p></div>
 <div><h3>Mailing address</h3><p>P.O. Box 1406<br>Elkton, MD 21922-1406</p><p><a href="mailto:info@cecilsoccer.org">info@cecilsoccer.org</a><br><a href="tel:+14106707347">(410) 670-7347</a></p></div>
 </div><div class="wrap legal">&copy; 2026 Cecil Soccer League, Inc. All rights reserved. Main website: <a href="{CSL}/">cecilsoccer.org</a></div></footer>
+{CECIL_JS}
 </body></html>
 """
 
