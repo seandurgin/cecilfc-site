@@ -16,6 +16,7 @@ PAGES = [
     ("fields.html", "Fields"),
     ("photos.html", "Photos"),
     ("governance.html", "Governance"),
+    ("board-dashboard.html", "Board"),
     ("contact.html", "Contact"),
 ]
 
@@ -111,7 +112,7 @@ FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="p
 LD = """<script type="application/ld+json">{"@context":"https://schema.org","@type":"SportsOrganization","name":"Cecil Soccer League, Inc.","alternateName":"Cecil FC","url":"https://cecilfc.org/","logo":"https://cecilfc.org/img/cfc-logo.png","sameAs":["https://www.cecilsoccer.org/","https://www.facebook.com/CecilSoccer/","https://www.instagram.com/cecilsoccer/"],"sport":"Soccer","nonprofitStatus":"Nonprofit501c3","taxID":"52-1311485","email":"info@cecilsoccer.org","telephone":"+1-410-670-7347","address":{"@type":"PostalAddress","streetAddress":"401 Elk Forest Rd","addressLocality":"Elkton","addressRegion":"MD","postalCode":"21921","addressCountry":"US"},"location":{"@type":"Place","name":"Chesland Soccer Complex","address":{"@type":"PostalAddress","streetAddress":"401 Elk Forest Rd","addressLocality":"Elkton","addressRegion":"MD","postalCode":"21921","addressCountry":"US"}}}</script>"""
 
 
-def shell(fname, title, desc, body, hero=None, sub=""):
+def shell(fname, title, desc, body, hero=None, sub="", extra_head="", extra_end=""):
     nav = "".join(
         f'<a href="{f}"{" aria-current=\"page\"" if f == fname else ""}>{t}</a>' for f, t in PAGES
     )
@@ -122,7 +123,7 @@ def shell(fname, title, desc, body, hero=None, sub=""):
 <meta name="description" content="{desc}">
 <link rel="canonical" href="https://cecilfc.org/{'' if fname == 'index.html' else fname}">
 <link rel="icon" href="img/cfc-logo.png">
-{FONTS}<link rel="stylesheet" href="style.css">{LD if fname == 'index.html' else ''}
+{FONTS}<link rel="stylesheet" href="style.css">{extra_head}{LD if fname == 'index.html' else ''}
 </head><body>
 <div class="bar"><div class="wrap">cecilfc.org is an official website of <strong>Cecil Soccer League, Inc.</strong>, a 501(c)(3) nonprofit. Registration and team pages: <a href="{CSL}/">cecilsoccer.org</a></div></div>
 <header class="top"><div class="wrap"><a class="brand" href="index.html"><img src="img/logo.png" alt="Cecil FC logo" width="58" height="58"><span>Cecil FC<small>Cecil Soccer League, Inc.</small></span></a><nav aria-label="Main">{nav}</nav></div></header>
@@ -131,11 +132,11 @@ def shell(fname, title, desc, body, hero=None, sub=""):
 <main>{body}</main>
 <footer><div class="wrap cols">
 <div><img src="img/cfc-logo.png" alt="" width="84" height="84"></div>
-<div><h3>Cecil Soccer League, Inc. (Cecil FC)</h3><p>501(c)(3) nonprofit &middot; EIN 52-1311485</p><p>An established youth soccer league in Cecil County, Maryland.</p><p><a href="https://www.facebook.com/CecilSoccer/">Facebook</a> &middot; <a href="https://www.instagram.com/cecilsoccer/">Instagram</a></p></div>
+<div><h3>Cecil Soccer League, Inc. (Cecil FC)</h3><p>501(c)(3) nonprofit &middot; EIN 52-1311485</p><p>An established youth soccer league in Cecil County, Maryland.</p><p><a href="https://www.facebook.com/CecilSoccer/">Facebook</a> &middot; <a href="https://www.instagram.com/cecilsoccer/">Instagram</a></p><p><a href="board-dashboard.html">Board dashboard</a></p></div>
 <div><h3>Physical address</h3><p>Chesland Soccer Complex<br>401 Elk Forest Rd<br>Elkton, MD 21921</p></div>
 <div><h3>Mailing address</h3><p>P.O. Box 1406<br>Elkton, MD 21922-1406</p><p><a href="mailto:info@cecilsoccer.org">info@cecilsoccer.org</a><br><a href="tel:+14106707347">(410) 670-7347</a></p></div>
 </div><div class="wrap legal">&copy; 2026 Cecil Soccer League, Inc. All rights reserved. Main website: <a href="{CSL}/">cecilsoccer.org</a></div></footer>
-</body></html>
+{extra_end}</body></html>
 """
 
 
@@ -375,7 +376,8 @@ GOV = shell("governance.html", "Governance",
 <tr><td>Registrar</td><td><em>Vacant</em></td></tr>
 </tbody></table></div>
 <p class="cite">Officers and directors as elected at the October 11, 2026 board meeting.</p>
-<p>Contact the board at <a href="mailto:board@cecilsoccer.org">board@cecilsoccer.org</a>.</p></div>
+<p>Contact the board at <a href="mailto:board@cecilsoccer.org">board@cecilsoccer.org</a>.</p>
+<p>Club Google apps for directors are on the <a href="board-dashboard.html">board dashboard</a>.</p></div>
 <div class="panel"><h3>Nonprofit status</h3><dl>
 <dt>Organization</dt><dd>Cecil Soccer League, Inc.</dd>
 <dt>IRS status</dt><dd>501(c)(3) public charity</dd>
@@ -404,8 +406,32 @@ CONTACT = shell("contact.html", "Contact",
     sub="We&rsquo;d love to hear from you.")
 
 (ROOT / "style.css").write_text(CSS)
+BOARD = shell(
+    "board-dashboard.html",
+    "Board Dashboard",
+    "Board dashboard for Cecil FC directors: spin a soccer ball of Google Workspace apps and open the one you need.",
+    """
+<section class="board-stage">
+<p class="board-hint" id="board-hint">Drag to spin. Tap a panel to open it.</p>
+<div class="stage" id="board-stage" tabindex="0" role="group" aria-label="Soccer ball of Google apps. Arrow keys spin it." aria-describedby="board-hint">
+<nav class="ball" id="board-ball" aria-label="Google Workspace apps"></nav>
+</div>
+<p class="board-readout" id="board-readout">Cecil Soccer League</p>
+</section>
+<section><div class="wrap">
+<h2>All services</h2>
+<p>The same apps as on the ball, if you would rather tap a list.</p>
+<div class="service-grid" id="service-list"></div>
+</div></section>
+<noscript><div class="wrap"><p>This dashboard needs JavaScript to draw the ball and list the apps.</p></div></noscript>
+""",
+    sub="A launcher for the club's Google apps, for board members.",
+    extra_head='<link rel="stylesheet" href="board-dashboard.css">',
+    extra_end='<script src="board-dashboard.js"></script>',
+)
 OUT = [("index.html", HOME), ("about.html", ABOUT), ("programs.html", PROGRAMS), ("tournaments.html", TOURN),
-       ("fields.html", FIELDS), ("photos.html", PHOTOS_PAGE), ("governance.html", GOV), ("contact.html", CONTACT)]
+       ("fields.html", FIELDS), ("photos.html", PHOTOS_PAGE), ("governance.html", GOV),
+       ("board-dashboard.html", BOARD), ("contact.html", CONTACT)]
 for name, html in OUT:
     (ROOT / name).write_text(html)
 print("built", len(OUT), "pages")
