@@ -1,5 +1,5 @@
-# Builds the cecilfc.org multi-page site. Run: python3 build.py
-# Look, wording and photos carried over from cecilsoccer.org (Cecil FC brand: black, gold, red, white).
+# Builds the cecilfc.org apex site (thin board-tools landing). Run: python3 build.py
+# The unlisted test homepage lives in testsite/ for test.cecilfc.org and is not generated here.
 import pathlib
 
 ROOT = pathlib.Path(__file__).parent
