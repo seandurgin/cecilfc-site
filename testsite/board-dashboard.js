@@ -429,7 +429,7 @@
   }
 
   function icon(id) {
-    return '<img class="brand-icon" src="img/google/' + id + '.png" alt="" width="64" height="64">';
+    return '<img class="brand-icon" src="/img/google/' + id + '.png" alt="" width="64" height="64">';
   }
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {

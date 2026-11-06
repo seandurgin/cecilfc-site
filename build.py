@@ -1,5 +1,5 @@
-# Builds the cecilfc.org apex site (thin board-tools landing). Run: python3 build.py
-# The unlisted test homepage lives in testsite/ for test.cecilfc.org and is not generated here.
+# Builds the cecilfc.org apex. The homepage only redirects to cecilsoccer.org.
+# Board tools and the unlisted club homepage live in testsite/ for test.cecilfc.org.
 import pathlib
 
 ROOT = pathlib.Path(__file__).parent
@@ -101,8 +101,7 @@ LD = """<script type="application/ld+json">{"@context":"https://schema.org","@ty
 
 
 def shell(fname, title, desc, body, hero=None, sub="", extra_head="", extra_end=""):
-    board_cur = ' aria-current="page"' if fname == "board-dashboard.html" else ""
-    nav = f'<a href="{CSL}/">Official site</a><a href="board-dashboard.html"{board_cur}>Board tools</a>'
+    nav = f'<a href="{CSL}/">Official site</a>'
     head = hero or f'<div class="pagehead"><div class="wrap"><h1>{title}</h1>{f"<p>{sub}</p>" if sub else ""}</div></div>'
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -113,14 +112,14 @@ def shell(fname, title, desc, body, hero=None, sub="", extra_head="", extra_end=
 <link rel="icon" href="img/cfc-logo.png">
 {FONTS}<link rel="stylesheet" href="style.css">{extra_head}{LD if fname == 'index.html' else ''}
 </head><body>
-<div class="bar"><div class="wrap">The official Cecil FC website is <a href="{CSL}/">cecilsoccer.org</a>. This domain is only for board and Workspace tools.</div></div>
+<div class="bar"><div class="wrap">The official Cecil FC website is <a href="{CSL}/">cecilsoccer.org</a>.</div></div>
 <header class="top"><div class="wrap"><a class="brand" href="index.html"><img src="img/logo.png" alt="Cecil FC logo" width="58" height="58"><span>Cecil FC<small>Cecil Soccer League, Inc.</small></span></a><nav aria-label="Main">{nav}</nav></div></header>
 {head}
 <div class="stripe" aria-hidden="true"></div>
 <main>{body}</main>
 <footer><div class="wrap cols">
 <div><img src="img/cfc-logo.png" alt="" width="84" height="84"></div>
-<div><h3>Cecil Soccer League, Inc.</h3><p>501(c)(3) nonprofit &middot; EIN 52-1311485</p><p>cecilfc.org is the board-tools address, not the public club site.</p><p><a href="{CSL}/">Official site: cecilsoccer.org</a></p><p><a href="board-dashboard.html">Board dashboard</a></p></div>
+<div><h3>Cecil Soccer League, Inc.</h3><p>501(c)(3) nonprofit &middot; EIN 52-1311485</p><p>The public club website is <a href="{CSL}/">cecilsoccer.org</a>.</p></div>
 <div><h3>Physical address</h3><p>Chesland Soccer Complex<br>401 Elk Forest Rd<br>Elkton, MD 21921</p></div>
 <div><h3>Mailing address</h3><p>P.O. Box 1406<br>Elkton, MD 21922-1406</p><p><a href="mailto:info@cecilsoccer.org">info@cecilsoccer.org</a><br><a href="tel:+14106707347">(410) 670-7347</a></p></div>
 </div><div class="wrap legal">&copy; 2026 Cecil Soccer League, Inc. All rights reserved. Official club website: <a href="{CSL}/">cecilsoccer.org</a></div></footer>
@@ -138,22 +137,17 @@ COACH = """<h3>Coaching a team</h3>
 <ul class="clean"><li>Complete a TeamSnap coach registration form</li><li>Complete a GotSport registration form (sent in the TeamSnap confirmation email)</li><li>Complete coaching requirements in GotSport: background check, CDC concussion course, and SafeSport training</li></ul>
 <p class="cite">Coaching requirements are valid for one year and restart every July 1.</p>"""
 
-HOME = shell("index.html", "Board tools",
-    "cecilfc.org hosts board and Google Workspace tools for Cecil Soccer League, Inc. The official club website is cecilsoccer.org.",
-    f"""
-<section><div class="wrap grid two">
-<div><h2>Official club website</h2>
-<p>Teams, registration, schedules, and club news are on <a href="{CSL}/">cecilsoccer.org</a>. That is the site for families and players.</p>
-<p><a class="btn primary" href="{CSL}/">cecilsoccer.org</a></p></div>
-<div class="panel"><h3>Cecil Soccer League, Inc.</h3>
-<p>501(c)(3) nonprofit. This domain is the board-tools address.</p>
-<dl>
-<dt>Legal name</dt><dd>Cecil Soccer League, Inc.</dd>
-<dt>EIN</dt><dd>52-1311485</dd>
-<dt>Physical address</dt><dd>Chesland Soccer Complex<br>401 Elk Forest Rd<br>Elkton, MD 21921</dd>
-<dt>Mailing address</dt><dd>P.O. Box 1406<br>Elkton, MD 21922-1406</dd>
-</dl></div></div></section>""",
-    hero=f"""<div class="pagehead"><div class="wrap"><p class="kicker">Not the public club site</p><h1>Cecil FC board tools</h1><p>cecilfc.org is for the league&rsquo;s board and Google Workspace tools. It is not the club&rsquo;s public website.</p><div class="btns" style="margin-top:1.4rem"><a class="btn primary" href="{CSL}/">Go to the official site, cecilsoccer.org</a><a class="btn ghost" href="board-dashboard.html">Board dashboard</a></div></div></div>""")
+HOME = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cecil Soccer League</title>
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="refresh" content="0; url={CSL}/">
+<link rel="canonical" href="{CSL}/">
+<script>location.replace("{CSL}/");</script>
+</head><body>
+<p><a href="{CSL}/">Continue to cecilsoccer.org</a></p>
+</body></html>
+"""
 
 ABOUT = shell("about.html", "About",
     "About Cecil Soccer League, Inc.: mission, history, policies, and organization details.",
@@ -339,8 +333,7 @@ GOV = shell("governance.html", "Governance",
 <tr><td>Registrar</td><td><em>Vacant</em></td></tr>
 </tbody></table></div>
 <p class="cite">Officers and directors as elected at the October 11, 2026 board meeting.</p>
-<p>Contact the board at <a href="mailto:board@cecilsoccer.org">board@cecilsoccer.org</a>.</p>
-<p>Club Google apps for directors are on the <a href="board-dashboard.html">board dashboard</a>.</p></div>
+<p>Contact the board at <a href="mailto:board@cecilsoccer.org">board@cecilsoccer.org</a>.</p></div>
 <div class="panel"><h3>Nonprofit status</h3><dl>
 <dt>Organization</dt><dd>Cecil Soccer League, Inc.</dd>
 <dt>IRS status</dt><dd>501(c)(3) public charity</dd>
@@ -370,32 +363,9 @@ CONTACT = shell("contact.html", "Contact",
 
 (ROOT / "style.css").write_text(CSS)
 (ROOT / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
-BOARD = shell(
-    "board-dashboard.html",
-    "Board Dashboard",
-    "Board dashboard for Cecil FC directors: spin a soccer ball of Google Workspace apps and open the one you need.",
-    """
-<section class="board-stage">
-<p class="board-hint" id="board-hint">Drag to spin. Tap a panel to open it.</p>
-<div class="stage" id="board-stage" tabindex="0" role="group" aria-label="Soccer ball of Google apps. Arrow keys spin it." aria-describedby="board-hint">
-<nav class="ball" id="board-ball" aria-label="Google Workspace apps"></nav>
-</div>
-<p class="board-readout" id="board-readout">Cecil Soccer League</p>
-</section>
-<section><div class="wrap">
-<h2>All services</h2>
-<p>The same apps as on the ball, if you would rather tap a list.</p>
-<div class="service-grid" id="service-list"></div>
-</div></section>
-<noscript><div class="wrap"><p>This dashboard needs JavaScript to draw the ball and list the apps.</p></div></noscript>
-""",
-    sub="A launcher for the club's Google apps, for board members.",
-    extra_head='<link rel="stylesheet" href="board-dashboard.css">',
-    extra_end='<script src="board-dashboard.js"></script>',
-)
 OUT = [("index.html", HOME), ("about.html", ABOUT), ("programs.html", PROGRAMS), ("tournaments.html", TOURN),
        ("fields.html", FIELDS), ("photos.html", PHOTOS_PAGE), ("governance.html", GOV),
-       ("board-dashboard.html", BOARD), ("contact.html", CONTACT)]
+       ("contact.html", CONTACT)]
 for name, html in OUT:
     (ROOT / name).write_text(html)
 print("built", len(OUT), "pages")
