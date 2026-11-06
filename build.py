@@ -8,18 +8,6 @@ MAPS_CHES = "https://www.google.com/maps/search/?api=1&query=401+Elk+Forest+Rd+E
 MAPS_ARENA = "https://www.google.com/maps/search/?api=1&query=Cecil+Arena+2706+North+East+Rd+North+East+MD+21901"
 CSL = "https://www.cecilsoccer.org"
 
-PAGES = [
-    ("index.html", "Home"),
-    ("about.html", "About"),
-    ("programs.html", "Programs"),
-    ("tournaments.html", "Tournaments"),
-    ("fields.html", "Fields"),
-    ("photos.html", "Photos"),
-    ("governance.html", "Governance"),
-    ("board-dashboard.html", "Board"),
-    ("contact.html", "Contact"),
-]
-
 CSS = """:root{--black:#0a0a0a;--ink:#1d1d1d;--gold:#eac300;--gold-2:#f5d63d;--red:#c8102e;--red-2:#a50d26;--paper:#f6f5f1;--line:#e3e1da;--muted:#5d5d5d}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 'Open Sans',Helvetica,Arial,sans-serif;overflow-wrap:break-word}
@@ -44,7 +32,7 @@ nav a[aria-current=page]{color:#fff;border-bottom-color:var(--gold)}
 .hero{position:relative;color:#fff;background:#000 url(img/fire-presidents-cup.jpg) center 35%/cover}
 .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.65) 55%,rgba(0,0,0,.25) 100%)}
 .hero .wrap{position:relative;padding-top:4rem;padding-bottom:4.4rem}
-.hero .kicker{color:var(--gold);font:600 1rem Oswald,sans-serif;text-transform:uppercase;letter-spacing:.12em;margin:0}
+.kicker,.hero .kicker{color:var(--gold);font:600 1rem Oswald,sans-serif;text-transform:uppercase;letter-spacing:.12em;margin:0 0 .35rem}
 .hero h1{font-size:clamp(2.5rem,7vw,4.6rem);margin:.3rem 0 .8rem;max-width:14ch}
 .hero p{font-size:1.15rem;max-width:34rem;margin:0 0 1.6rem;color:#f1f1f1}
 .stripe{height:10px;background:repeating-linear-gradient(135deg,var(--gold) 0 22px,var(--black) 22px 44px)}
@@ -109,33 +97,33 @@ footer .legal{border-top:1px solid #2c2c2c;margin-top:1.6rem;padding-top:1rem;fo
 
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Oswald:wght@500;600&display=swap">'
 
-LD = """<script type="application/ld+json">{"@context":"https://schema.org","@type":"SportsOrganization","name":"Cecil Soccer League, Inc.","alternateName":"Cecil FC","url":"https://cecilfc.org/","logo":"https://cecilfc.org/img/cfc-logo.png","sameAs":["https://www.cecilsoccer.org/","https://www.facebook.com/CecilSoccer/","https://www.instagram.com/cecilsoccer/"],"sport":"Soccer","nonprofitStatus":"Nonprofit501c3","taxID":"52-1311485","email":"info@cecilsoccer.org","telephone":"+1-410-670-7347","address":{"@type":"PostalAddress","streetAddress":"401 Elk Forest Rd","addressLocality":"Elkton","addressRegion":"MD","postalCode":"21921","addressCountry":"US"},"location":{"@type":"Place","name":"Chesland Soccer Complex","address":{"@type":"PostalAddress","streetAddress":"401 Elk Forest Rd","addressLocality":"Elkton","addressRegion":"MD","postalCode":"21921","addressCountry":"US"}}}</script>"""
+LD = """<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Cecil Soccer League, Inc.","alternateName":"Cecil FC","url":"https://www.cecilsoccer.org/","logo":"https://cecilfc.org/img/cfc-logo.png","nonprofitStatus":"Nonprofit501c3","taxID":"52-1311485","email":"info@cecilsoccer.org","telephone":"+1-410-670-7347","address":{"@type":"PostalAddress","streetAddress":"401 Elk Forest Rd","addressLocality":"Elkton","addressRegion":"MD","postalCode":"21921","addressCountry":"US"}}</script>"""
 
 
 def shell(fname, title, desc, body, hero=None, sub="", extra_head="", extra_end=""):
-    nav = "".join(
-        f'<a href="{f}"{" aria-current=\"page\"" if f == fname else ""}>{t}</a>' for f, t in PAGES
-    )
+    board_cur = ' aria-current="page"' if fname == "board-dashboard.html" else ""
+    nav = f'<a href="{CSL}/">Official site</a><a href="board-dashboard.html"{board_cur}>Board tools</a>'
     head = hero or f'<div class="pagehead"><div class="wrap"><h1>{title}</h1>{f"<p>{sub}</p>" if sub else ""}</div></div>'
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} | Cecil Soccer League, Inc. (Cecil FC)</title>
 <meta name="description" content="{desc}">
+<meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="https://cecilfc.org/{'' if fname == 'index.html' else fname}">
 <link rel="icon" href="img/cfc-logo.png">
 {FONTS}<link rel="stylesheet" href="style.css">{extra_head}{LD if fname == 'index.html' else ''}
 </head><body>
-<div class="bar"><div class="wrap">cecilfc.org is an official website of <strong>Cecil Soccer League, Inc.</strong>, a 501(c)(3) nonprofit. Registration and team pages: <a href="{CSL}/">cecilsoccer.org</a></div></div>
+<div class="bar"><div class="wrap">The official Cecil FC website is <a href="{CSL}/">cecilsoccer.org</a>. This domain is only for board and Workspace tools.</div></div>
 <header class="top"><div class="wrap"><a class="brand" href="index.html"><img src="img/logo.png" alt="Cecil FC logo" width="58" height="58"><span>Cecil FC<small>Cecil Soccer League, Inc.</small></span></a><nav aria-label="Main">{nav}</nav></div></header>
 {head}
 <div class="stripe" aria-hidden="true"></div>
 <main>{body}</main>
 <footer><div class="wrap cols">
 <div><img src="img/cfc-logo.png" alt="" width="84" height="84"></div>
-<div><h3>Cecil Soccer League, Inc. (Cecil FC)</h3><p>501(c)(3) nonprofit &middot; EIN 52-1311485</p><p>An established youth soccer league in Cecil County, Maryland.</p><p><a href="https://www.facebook.com/CecilSoccer/">Facebook</a> &middot; <a href="https://www.instagram.com/cecilsoccer/">Instagram</a></p><p><a href="board-dashboard.html">Board dashboard</a></p></div>
+<div><h3>Cecil Soccer League, Inc.</h3><p>501(c)(3) nonprofit &middot; EIN 52-1311485</p><p>cecilfc.org is the board-tools address, not the public club site.</p><p><a href="{CSL}/">Official site: cecilsoccer.org</a></p><p><a href="board-dashboard.html">Board dashboard</a></p></div>
 <div><h3>Physical address</h3><p>Chesland Soccer Complex<br>401 Elk Forest Rd<br>Elkton, MD 21921</p></div>
 <div><h3>Mailing address</h3><p>P.O. Box 1406<br>Elkton, MD 21922-1406</p><p><a href="mailto:info@cecilsoccer.org">info@cecilsoccer.org</a><br><a href="tel:+14106707347">(410) 670-7347</a></p></div>
-</div><div class="wrap legal">&copy; 2026 Cecil Soccer League, Inc. All rights reserved. Main website: <a href="{CSL}/">cecilsoccer.org</a></div></footer>
+</div><div class="wrap legal">&copy; 2026 Cecil Soccer League, Inc. All rights reserved. Official club website: <a href="{CSL}/">cecilsoccer.org</a></div></footer>
 {extra_end}</body></html>
 """
 
@@ -150,47 +138,22 @@ COACH = """<h3>Coaching a team</h3>
 <ul class="clean"><li>Complete a TeamSnap coach registration form</li><li>Complete a GotSport registration form (sent in the TeamSnap confirmation email)</li><li>Complete coaching requirements in GotSport: background check, CDC concussion course, and SafeSport training</li></ul>
 <p class="cite">Coaching requirements are valid for one year and restart every July 1.</p>"""
 
-HOME = shell("index.html", "Home",
-    "Cecil FC is the youth soccer program of Cecil Soccer League, Inc., a 501(c)(3) nonprofit at Chesland Soccer Complex in Elkton, Maryland.",
+HOME = shell("index.html", "Board tools",
+    "cecilfc.org hosts board and Google Workspace tools for Cecil Soccer League, Inc. The official club website is cecilsoccer.org.",
     f"""
-<section><div class="wrap grid two-w">
-<div><h2>Who are we?</h2>
-<p>We are an established soccer league located in Cecil County, Maryland. Whether you are interested in a <strong>Recreational</strong>, <strong>Competitive</strong> and/or <strong>Winter (indoor)</strong> program, we would love for your family to become part of our family!</p>
-<p><strong>Cecil Soccer League, Inc.</strong> is a volunteer-run, 501(c)(3) nonprofit. Our programs play as <strong>Cecil FC</strong>, serving roughly 1,200 players ages 4 to 18 each year at the Chesland Soccer Complex in Elkton.</p>
-<p><a href="about.html">More about the league &rarr;</a></p></div>
-<div class="panel"><h3>At a glance</h3><dl>
+<section><div class="wrap grid two">
+<div><h2>Official club website</h2>
+<p>Teams, registration, schedules, and club news are on <a href="{CSL}/">cecilsoccer.org</a>. That is the site for families and players.</p>
+<p><a class="btn primary" href="{CSL}/">cecilsoccer.org</a></p></div>
+<div class="panel"><h3>Cecil Soccer League, Inc.</h3>
+<p>501(c)(3) nonprofit. This domain is the board-tools address.</p>
+<dl>
 <dt>Legal name</dt><dd>Cecil Soccer League, Inc.</dd>
-<dt>Also known as</dt><dd>Cecil FC</dd>
-<dt>Tax status</dt><dd>501(c)(3) nonprofit</dd>
 <dt>EIN</dt><dd>52-1311485</dd>
-<dt>Home field</dt><dd>{PHYS}</dd>
-<dt>Mailing</dt><dd>P.O. Box 1406, Elkton, MD 21922-1406</dd>
-</dl></div></div></section>
-<section><div class="wrap"><h2>Our programs</h2><div class="grid three">
-{card("league-header.jpg", "Cecil Soccer League Recreational Soccer banner", "Recreational", "Fun, safe, and competitive soccer for every kid, from U3 through high school. Spring and fall at Chesland.", "programs.html#rec")}
-{card("club-header.jpg", "Cecil Soccer Club Competitive Soccer banner", "Competitive (travel)", "Travel teams from U9 up through high school, led by licensed coaches. Tryouts every spring.", "programs.html#travel")}
-{card("cecil-arena.jpg", "The Cecil Arena", "Winter indoor", "Games-only indoor rec at the Cecil Arena, January through February.", "programs.html#indoor")}
-</div></div></section>
-<section class="dark"><div class="wrap grid two">
-<div><span class="badge">Now open</span><h2 style="margin-top:.6rem">Winter Indoor Rec 2027</h2>
-<p>Season runs <strong>January 2 &ndash; February 27, 2027</strong> at the Cecil Arena. Divisions U6 through U18.</p>
-<ul class="clean"><li>Regular registration (Oct 14 &ndash; Nov 30): <strong>$90</strong></li><li>Late registration (Dec 1 &ndash; Dec 11): <strong>$110</strong></li></ul>
-<div class="btns" style="margin-top:1rem"><a class="btn primary" href="{CSL}/recreation-csl/winter-indoor-rec/">Register for winter indoor</a></div></div>
-<div><span class="badge">November 14 &amp; 15</span><h2 style="margin-top:.6rem">18th Annual Cecil Fall Blast</h2>
-<p>One-day tournament, three games guaranteed. Boys on November 14, girls on November 15, U8&ndash;U16. Application deadline <strong>October 26, 2026</strong>.</p>
-<div class="btns" style="margin-top:1rem"><a class="btn red" href="tournaments.html#fall-blast">Tournament details</a></div></div>
-</div></section>
-<section><div class="wrap grid two">
-<figure><img class="shot" src="img/john-jones.jpg" alt="Cecil FC John Jones Memorial Scholarship banner" loading="lazy"></figure>
-<div><h2>John Jones Memorial College Scholarship</h2>
-<p>John Jones was instrumental in building the Chesland Soccer Complex and the Bard Cameron Sports Park. Each year Cecil Soccer awards two $1,500 scholarships in his name to graduating seniors who best exemplify community service, academic excellence, and good sportsmanship.</p>
-<p><a href="programs.html#scholarship">Scholarship details &rarr;</a></p></div>
-</div></section>
-<section><div class="wrap grid two">
-<div><h2>Where we play</h2><p>Outdoor rec and home travel games are played at the <strong>Chesland Soccer Complex</strong>, 401 Elk Forest Rd, Elkton. The league has operated the complex under a lease with Cecil County since 2002. Winter indoor games are at the <strong>Cecil Arena</strong> in North East.</p><p><a href="fields.html">Field map and directions &rarr;</a></p></div>
-<div class="callout"><h3>Stay in the loop</h3><p>Get registration openings, schedules, and field updates by email. <a href="http://eepurl.com/ghSJK9">Join our mailing list &rarr;</a></p><p style="margin-top:.6rem">Questions? <a href="mailto:info@cecilsoccer.org">info@cecilsoccer.org</a> &middot; <a href="tel:+14106707347">(410) 670-7347</a></p></div>
-</div></section>""",
-    hero=f"""<div class="hero"><div class="wrap"><p class="kicker">Cecil County, Maryland</p><h1>Welcome to Cecil Soccer Club</h1><p>Recreational, competitive, and winter indoor youth soccer for Cecil County families, run by volunteers.</p><div class="btns"><a class="btn primary" href="{CSL}/recreation-csl/">Recreational soccer</a><a class="btn ghost" href="{CSL}/competitive-csl/tryout-info-2/">Competitive tryouts</a></div></div></div>""")
+<dt>Physical address</dt><dd>Chesland Soccer Complex<br>401 Elk Forest Rd<br>Elkton, MD 21921</dd>
+<dt>Mailing address</dt><dd>P.O. Box 1406<br>Elkton, MD 21922-1406</dd>
+</dl></div></div></section>""",
+    hero=f"""<div class="pagehead"><div class="wrap"><p class="kicker">Not the public club site</p><h1>Cecil FC board tools</h1><p>cecilfc.org is for the league&rsquo;s board and Google Workspace tools. It is not the club&rsquo;s public website.</p><div class="btns" style="margin-top:1.4rem"><a class="btn primary" href="{CSL}/">Go to the official site, cecilsoccer.org</a><a class="btn ghost" href="board-dashboard.html">Board dashboard</a></div></div></div>""")
 
 ABOUT = shell("about.html", "About",
     "About Cecil Soccer League, Inc.: mission, history, policies, and organization details.",
@@ -406,6 +369,7 @@ CONTACT = shell("contact.html", "Contact",
     sub="We&rsquo;d love to hear from you.")
 
 (ROOT / "style.css").write_text(CSS)
+(ROOT / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
 BOARD = shell(
     "board-dashboard.html",
     "Board Dashboard",
