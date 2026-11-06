@@ -13,41 +13,6 @@
     return "https://accounts.google.com/ServiceLogin?hd=" + DOMAIN + "&continue=" + encodeURIComponent(url);
   }
 
-  var ICONS = {
-    gmail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/>',
-    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
-    drive: '<path d="M12 3.5 21 19.5H3Z"/>',
-    docs: '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M9.5 13h5.5M9.5 17h5.5"/>',
-    sheets: '<rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M4 9h16M4 15h16M10 3v18M15.5 9v12"/>',
-    slides: '<rect x="3" y="5" width="18" height="14" rx="2"/><rect x="7" y="8.5" width="10" height="7" rx="1"/>',
-    forms: '<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>',
-    chat: '<path d="M5 5.5h14v9.5H9.2L5 18.2z"/>',
-    meet: '<rect x="2.5" y="7" width="12" height="10" rx="2"/><path d="M14.5 11.2 21 8.2v7.6l-6.5-3z"/>',
-    keep: '<path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a5 5 0 0 1 3.2 8.8c-.7.6-1.2 1.3-1.2 2.2h-4c0-.9-.5-1.6-1.2-2.2A5 5 0 0 1 12 3z"/>',
-    contacts: '<circle cx="12" cy="8" r="3.1"/><path d="M5.2 19.5c.9-3.1 3.4-4.7 6.8-4.7s5.9 1.6 6.8 4.7"/>',
-    tasks: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="m8 12.2 2.7 2.8 5.2-6"/>',
-    sites: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 12.5h4.2V17H7zM13.2 12.5H18M13.2 15.5H17"/>',
-    groups: '<circle cx="8" cy="9" r="2.1"/><circle cx="16" cy="9" r="2.1"/><circle cx="12" cy="11" r="2.2"/><path d="M3.8 18.5c.7-2.3 2.4-3.5 4.4-3.5M20.2 18.5c-.7-2.3-2.4-3.5-4.4-3.5M8.2 18.6c.6-2 2.1-3.1 3.8-3.1s3.2 1.1 3.8 3.1"/>',
-    admin: '<path d="M4 7h16M4 12h16M4 17h16"/><circle cx="8" cy="7" r="1.7"/><circle cx="15" cy="12" r="1.7"/><circle cx="10" cy="17" r="1.7"/>',
-    drawings: '<path d="M14 3.5 20.5 10 8.5 22H3.5v-5z"/><path d="m12.5 5.5 6 6"/>',
-    voice: '<rect x="8" y="2.5" width="8" height="19" rx="2"/><path d="M11 18.5h2"/>',
-    classroom: '<path d="m2 10 10-5 10 5-10 5z"/><path d="M6 12.2V17l6 3 6-3v-4.8"/>',
-    youtube: '<rect x="3" y="7" width="18" height="11" rx="2.5"/><path d="m11 10.2 5 2.3-5 2.3z"/>',
-    photos: '<rect x="3" y="5.5" width="18" height="14" rx="2"/><circle cx="12" cy="12.5" r="3.1"/><circle cx="17" cy="8.6" r="0.9"/>',
-    maps: '<path d="M12 21s6-5.4 6-11a6 6 0 1 0-12 0c0 5.6 6 11 6 11z"/><circle cx="12" cy="10" r="1.8"/>',
-    earth: '<circle cx="12" cy="12" r="8"/><ellipse cx="12" cy="12" rx="3.4" ry="8"/><path d="M4.2 12h15.6M6.2 8.2h11.6M6.2 15.8h11.6"/>',
-    translate: '<path d="M3 6h9M7.5 6C7.7 10 5.2 13 3.4 14.2M7.5 6c.3 4 2.6 7 4.4 8.2M4.3 10.4h6.4"/><path d="m13.2 18.6 3.2-8h.7l3.3 8M14.5 15.8h4.4"/>',
-    gemini: '<path d="m12 2.4 1.9 6.5 6.6 2.1-6.6 2.1L12 21.6l-1.9-6.5-6.6-2.1 6.6-2.1z"/>',
-    analytics: '<path d="M4 19V10M10 19V5M16 19v-7M21 19H3"/>',
-    looker: '<circle cx="12" cy="12" r="8"/><path d="M12 12V4.2M12 12l6.2 3.6"/>',
-    search: '<circle cx="10.5" cy="10.5" r="5.8"/><path d="m15 15 5 5"/>',
-    business: '<path d="M4 10 6.2 4h11.6L20 10"/><path d="M4 10h16v9.5H4z"/><path d="M10 19.5v-5h4v5"/>',
-    mymaps: '<path d="M4 6.5 9 4l6 2.5L20 4v13.5L15 20l-6-2.5L4 20z"/><path d="M9 4v13.5M15 6.5V20"/>',
-    script: '<path d="M8 7.5 3.5 12 8 16.5M16 7.5 20.5 12 16 16.5M13.2 5.5l-2.4 13"/>',
-    notebook: '<path d="M6 3.5h12v17H6z"/><path d="M9 3.5v17M12.5 8H16M12.5 12H16M12.5 16h2.4"/>',
-    vids: '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M3 14h18M8.2 6v12M15.8 6v12"/>'
-  };
-
   // Front of the ball first. The first nine are the ones the board asked for.
   var SERVICES = [
     { id: "gmail", label: "Gmail", name: "Gmail", group: "everyday", href: "https://mail.google.com/a/" + DOMAIN },
@@ -451,9 +416,10 @@
         if (Math.abs(e0 - e1) / e0 > 0.02) throw new Error("uneven 2D edge");
       }
     });
+    var fs = require("fs");
     var ids = {};
     model.faces.forEach(function (f) {
-      if (!ICONS[f.service.id]) throw new Error("no icon " + f.service.id);
+      if (!fs.existsSync("img/google/" + f.service.id + ".png")) throw new Error("no icon " + f.service.id);
       if (ids[f.service.id]) throw new Error("dup " + f.service.id);
       ids[f.service.id] = 1;
       console.log([f.service.name, f.sides === 5 ? "pentagon" : "hexagon", f.service.href].join("\t"));
@@ -463,9 +429,7 @@
   }
 
   function icon(id) {
-    var inner = ICONS[id];
-    if (!inner) return "";
-    return '<svg class="board-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + inner + "</svg>";
+    return '<img class="brand-icon" src="img/google/' + id + '.png" alt="" width="64" height="64">';
   }
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
@@ -549,9 +513,9 @@
         '<span class="label">' + icon(f.service.id) + '<span class="name">' + esc(f.service.label) + "</span></span>";
       var name = a.querySelector(".name");
       var long = f.service.label.length >= 9;
-      name.style.fontSize = Math.max(11, w * (long ? 0.09 : 0.108)) + "px";
-      var mark = a.querySelector(".label svg");
-      var s = Math.max(16, w * 0.18);
+      name.style.fontSize = Math.max(11, w * (long ? 0.082 : 0.098)) + "px";
+      var mark = a.querySelector(".label img");
+      var s = Math.max(22, w * 0.30);
       mark.style.width = s + "px";
       mark.style.height = s + "px";
       f.el = a;

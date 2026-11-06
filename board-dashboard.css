@@ -72,7 +72,7 @@ section.board-stage + section { border-top: 0; }
   align-items: center;
   justify-content: center;
   gap: .12em;
-  width: 62%;
+  width: 68%;
   text-align: center;
   transform: translate(-50%, -50%);
   transform-origin: center center;
@@ -86,13 +86,11 @@ section.board-stage + section { border-top: 0; }
   line-height: 1;
   white-space: nowrap;
 }
-svg.board-icon {
+img.brand-icon {
   display: block;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  object-fit: contain;
+  flex: none;
+  pointer-events: none;
 }
 @media (hover: hover) {
   .face:hover .skin { stroke: #fff3a3; }
@@ -140,7 +138,7 @@ svg.board-icon {
   line-height: 1.15;
 }
 .service-grid a span { min-width: 0; }
-.service-grid a svg.board-icon { width: 22px; height: 22px; flex: none; }
+.service-grid a img.brand-icon { width: 28px; height: 28px; }
 .service-grid a:hover { background: #fff8d4; }
 @media (max-width: 560px) {
   .board-readout { font-size: 1.12rem; }
