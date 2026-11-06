@@ -45,37 +45,36 @@ section.board-stage + section { border-top: 0; }
   left: 0;
   top: 0;
   display: block;
-  background: var(--gold);
-  color: var(--gold);
+  background: transparent;
   text-decoration: none;
   transform-origin: center center;
   backface-visibility: hidden;
+  pointer-events: none;
   -webkit-tap-highlight-color: transparent;
 }
-.face .panel {
+.face.pent { color: var(--gold); }
+.face.hex { color: #141414; }
+.face .panel-svg {
   position: absolute;
-  inset: 3.4%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  inset: 0;
+  overflow: visible;
+  display: block;
   pointer-events: none;
 }
-.face.pent .panel {
-  background: radial-gradient(circle at 36% 32%, #2c2c2c, #0c0c0c 72%);
-  color: var(--gold);
-}
-.face.hex .panel {
-  background: radial-gradient(circle at 36% 32%, #ffffff, #e6e1d4 78%);
-  color: #141414;
-}
+.face .skin { pointer-events: auto; }
+.face .shade { pointer-events: none; }
 .face .label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: .12em;
-  width: 86%;
+  width: 62%;
   text-align: center;
+  transform: translate(-50%, -50%);
   transform-origin: center center;
   pointer-events: none;
 }
@@ -87,12 +86,6 @@ section.board-stage + section { border-top: 0; }
   line-height: 1;
   white-space: nowrap;
 }
-.face .shade {
-  position: absolute;
-  inset: 0;
-  background: #000;
-  pointer-events: none;
-}
 svg.board-icon {
   display: block;
   fill: none;
@@ -102,7 +95,7 @@ svg.board-icon {
   stroke-linejoin: round;
 }
 @media (hover: hover) {
-  .face:hover .panel { filter: brightness(1.08); }
+  .face:hover .skin { stroke: #fff3a3; }
 }
 .board-readout {
   margin: .15rem 0 0;

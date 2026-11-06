@@ -299,17 +299,14 @@
     var r = 0;
     var i;
     for (i = 0; i < flat.length; i++) r = Math.max(r, Math.hypot(flat[i].x, flat[i].y));
-    var clip = flat.map(function (q) {
-      return (50 + (q.x / r) * 50).toFixed(3) + "% " + (50 + (q.y / r) * 50).toFixed(3) + "%";
-    }).join(",");
     return {
       pts: flat.map(function (q) { return q.p; }),
+      flat: flat.map(function (q) { return { x: q.x, y: q.y }; }),
       u: u,
       v: v,
       n: n,
       center: center,
-      unitR: r,
-      clip: "polygon(" + clip + ")"
+      unitR: r
     };
   }
 
@@ -438,6 +435,22 @@
     var aimed = matVec(rotationFromTo({ x: 0.2, y: -0.4, z: 0.5 }, { x: 0, y: 1, z: 0 }), norm({ x: 0.2, y: -0.4, z: 0.5 }));
     if (Math.abs(aimed.y - 1) > 1e-9) throw new Error("rotationFromTo failed");
     if (model.edgeRatio > 1.01) throw new Error("edges uneven " + model.edgeRatio);
+    model.faces.forEach(function (f) {
+      var expect = Math.PI * (f.sides - 2) / f.sides;
+      var i, a, b, c, ux, uy, vx, vy, ang, e0, e1;
+      for (i = 0; i < f.sides; i++) {
+        a = f.flat[(i + f.sides - 1) % f.sides];
+        b = f.flat[i];
+        c = f.flat[(i + 1) % f.sides];
+        ux = a.x - b.x; uy = a.y - b.y;
+        vx = c.x - b.x; vy = c.y - b.y;
+        ang = Math.atan2(Math.abs(ux * vy - uy * vx), ux * vx + uy * vy);
+        if (Math.abs(ang - expect) > 0.04) throw new Error("bad corner on " + f.sides + "-gon " + ang);
+        e0 = Math.hypot(b.x - a.x, b.y - a.y);
+        e1 = Math.hypot(c.x - b.x, c.y - b.y);
+        if (Math.abs(e0 - e1) / e0 > 0.02) throw new Error("uneven 2D edge");
+      }
+    });
     var ids = {};
     model.faces.forEach(function (f) {
       if (!ICONS[f.service.id]) throw new Error("no icon " + f.service.id);
@@ -502,11 +515,22 @@
     return Math.max(96, size * 0.36);
   }
 
+  function facePoints(f, w) {
+    return f.flat.map(function (q) {
+      var x = w / 2 + (q.x / f.unitR) * (w / 2);
+      var y = w / 2 + (q.y / f.unitR) * (w / 2);
+      return x.toFixed(2) + "," + y.toFixed(2);
+    }).join(" ");
+  }
+
   function buildDom(radius) {
     ball.textContent = "";
     model.faces.forEach(function (f) {
       var w = 2 * f.unitR * radius;
       var a = document.createElement("a");
+      var pts = facePoints(f, w);
+      var fill = f.sides === 5 ? "#111111" : "#f7f5ef";
+      var seam = Math.max(2.5, w * 0.055);
       a.className = "face " + (f.sides === 5 ? "pent" : "hex");
       a.href = f.service.href;
       a.target = "_blank";
@@ -517,20 +541,22 @@
       a.style.height = w + "px";
       a.style.marginLeft = (-w / 2) + "px";
       a.style.marginTop = (-w / 2) + "px";
-      a.style.clipPath = f.clip;
       a.innerHTML =
-        '<span class="panel" style="clip-path:' + f.clip + '"><span class="label">' +
-        icon(f.service.id) + '<span class="name">' + esc(f.service.label) + "</span></span></span>" +
-        '<span class="shade"></span>';
+        '<svg class="panel-svg" viewBox="0 0 ' + w.toFixed(2) + " " + w.toFixed(2) + '" aria-hidden="true" focusable="false">' +
+        '<polygon class="skin" points="' + pts + '" fill="' + fill + '" stroke="#eac300" stroke-width="' + seam.toFixed(2) + '" stroke-linejoin="round"/>' +
+        '<polygon class="shade" points="' + pts + '" fill="#000"/>' +
+        "</svg>" +
+        '<span class="label">' + icon(f.service.id) + '<span class="name">' + esc(f.service.label) + "</span></span>";
       var name = a.querySelector(".name");
       var long = f.service.label.length >= 9;
-      name.style.fontSize = Math.max(11, w * (long ? 0.092 : 0.112)) + "px";
-      var svg = a.querySelector("svg");
-      var s = Math.max(16, w * 0.2);
-      svg.style.width = s + "px";
-      svg.style.height = s + "px";
+      name.style.fontSize = Math.max(11, w * (long ? 0.09 : 0.108)) + "px";
+      var mark = a.querySelector(".label svg");
+      var s = Math.max(16, w * 0.18);
+      mark.style.width = s + "px";
+      mark.style.height = s + "px";
       f.el = a;
       f.labelEl = a.querySelector(".label");
+      f.skin = a.querySelector(".skin");
       f.shadeEl = a.querySelector(".shade");
       f.pixelCenter = mul(f.center, radius);
       ball.appendChild(a);
@@ -547,8 +573,8 @@
       var parent = basis(f.u, f.v, f.n);
       f.el.style.transform = cssMatrix(parent, f.pixelCenter);
       var front = Math.max(0, worldN.z);
-      f.shadeEl.style.opacity = (0.58 * (1 - front)).toFixed(3);
-      f.el.style.pointerEvents = worldN.z > 0.18 ? "auto" : "none";
+      f.shadeEl.style.opacity = (0.5 * (1 - front)).toFixed(3);
+      f.skin.style.pointerEvents = worldN.z > 0.18 ? "auto" : "none";
       var uw = matVec(R, f.u);
       var vw = matVec(R, f.v);
       var down = { x: 0, y: 1, z: 0 };
@@ -556,7 +582,7 @@
       var dv = dot(down, vw);
       if (Math.hypot(du, dv) > 0.2) {
         var theta = -Math.atan2(du, dv);
-        f.labelEl.style.transform = "rotate(" + theta.toFixed(4) + "rad)";
+        f.labelEl.style.transform = "translate(-50%, -50%) rotate(" + theta.toFixed(4) + "rad)";
       }
     });
   }
